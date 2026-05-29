@@ -7,10 +7,59 @@ Use these formulas in a canvas app connected to the `TenantTracker` and `KeyTran
 ```powerfx
 Set(varTransactionType, Blank());
 Set(varSelectedTenant, Blank());
-Set(varLastTransactionId, Blank())
+Set(varLastTransactionId, Blank());
+Set(varIdleTimeoutMs, 180000);
+Set(varLastActivityAt, Now())
+```
+
+## App `StartScreen`
+
+```powerfx
+scrWelcome
+```
+
+## Shared Inactivity Pattern
+
+Use this pattern on the transaction workflow screens so the app returns to the welcome screen after three minutes of inactivity.
+
+Add this line at the start of button, gallery, and input formulas when staff interact with the app:
+
+```powerfx
+Set(varLastActivityAt, Now());
+```
+
+For a different timeout, change `varIdleTimeoutMs` in `App.OnStart`. For example, five minutes is `300000`.
+
+## Screen: `scrWelcome`
+
+### `scrWelcome.OnVisible`
+
+```powerfx
+Set(varTransactionType, Blank());
+Set(varSelectedTenant, Blank());
+Set(varLastActivityAt, Now())
+```
+
+### `btnStart.Text`
+
+```powerfx
+"Start key transaction"
+```
+
+### `btnStart.OnSelect`
+
+```powerfx
+Set(varLastActivityAt, Now());
+Navigate(scrTransactionType, ScreenTransition.Fade)
 ```
 
 ## Screen: `scrTransactionType`
+
+### `scrTransactionType.OnVisible`
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
 
 ### `btnReturnKeys.Text`
 
@@ -21,6 +70,7 @@ Set(varLastTransactionId, Blank())
 ### `btnReturnKeys.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Set(varTransactionType, "Return");
 Set(varSelectedTenant, Blank());
 Reset(txtTenantSearch);
@@ -36,18 +86,66 @@ Navigate(scrTenantSearch, ScreenTransition.Fade)
 ### `btnCollectKeys.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Set(varTransactionType, "Collection");
 Set(varSelectedTenant, Blank());
 Reset(txtTenantSearch);
 Navigate(scrTenantSearch, ScreenTransition.Fade)
 ```
 
+### `tmrIdleTransactionType.Duration`
+
+```powerfx
+10000
+```
+
+### `tmrIdleTransactionType.AutoStart`
+
+```powerfx
+true
+```
+
+### `tmrIdleTransactionType.Repeat`
+
+```powerfx
+true
+```
+
+### `tmrIdleTransactionType.Visible`
+
+```powerfx
+false
+```
+
+### `tmrIdleTransactionType.OnTimerEnd`
+
+```powerfx
+If(
+    DateDiff(varLastActivityAt, Now(), TimeUnit.Milliseconds) >= varIdleTimeoutMs,
+    Set(varTransactionType, Blank());
+    Set(varSelectedTenant, Blank());
+    Navigate(scrWelcome, ScreenTransition.Fade)
+)
+```
+
 ## Screen: `scrTenantSearch`
+
+### `scrTenantSearch.OnVisible`
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
 
 ### `txtTenantSearch.HintText`
 
 ```powerfx
 "Search tenant name..."
+```
+
+### `txtTenantSearch.OnChange`
+
+```powerfx
+Set(varLastActivityAt, Now())
 ```
 
 ### `galTenantResults.Items`
@@ -138,6 +236,7 @@ ThisItem.TenantStatus
 ### `galTenantResults.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Set(varSelectedTenant, ThisItem)
 ```
 
@@ -164,17 +263,41 @@ If(
 ### `btnSearchContinue.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Navigate(scrTenantConfirm, ScreenTransition.Fade)
 ```
 
 ### `btnSearchBack.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Set(varSelectedTenant, Blank());
 Navigate(scrTransactionType, ScreenTransition.Fade)
 ```
 
+### `tmrIdleSearch` properties
+
+Use the same timer settings as `tmrIdleTransactionType`.
+
+Set `tmrIdleSearch.OnTimerEnd` to:
+
+```powerfx
+If(
+    DateDiff(varLastActivityAt, Now(), TimeUnit.Milliseconds) >= varIdleTimeoutMs,
+    Set(varTransactionType, Blank());
+    Set(varSelectedTenant, Blank());
+    Reset(txtTenantSearch);
+    Navigate(scrWelcome, ScreenTransition.Fade)
+)
+```
+
 ## Screen: `scrTenantConfirm`
+
+### `scrTenantConfirm.OnVisible`
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
 
 ### Selected tenant name label `Text`
 
@@ -219,16 +342,39 @@ If(
 ### `btnConfirmBack.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Navigate(scrTenantSearch, ScreenTransition.Fade)
 ```
 
 ### `btnConfirmContinue.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Navigate(scrKeyDetails, ScreenTransition.Fade)
 ```
 
+### `tmrIdleConfirm` properties
+
+Use the same timer settings as `tmrIdleTransactionType`.
+
+Set `tmrIdleConfirm.OnTimerEnd` to:
+
+```powerfx
+If(
+    DateDiff(varLastActivityAt, Now(), TimeUnit.Milliseconds) >= varIdleTimeoutMs,
+    Set(varTransactionType, Blank());
+    Set(varSelectedTenant, Blank());
+    Navigate(scrWelcome, ScreenTransition.Fade)
+)
+```
+
 ## Screen: `scrKeyDetails`
+
+### `scrKeyDetails.OnVisible`
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
 
 ### Tenant name display `Text`
 
@@ -249,6 +395,7 @@ If(
 ### `btnKeyDetailsBack.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Navigate(scrTenantConfirm, ScreenTransition.Fade)
 ```
 
@@ -265,6 +412,7 @@ If(
 ### `btnSubmitTransaction.OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Set(
     varLastTransactionId,
     Text(Now(), "yyyymmddhhmmss") & "-" & Left(Text(GUID()), 8)
@@ -314,7 +462,59 @@ If your `TransactionType` column is stored as plain text rather than a SharePoin
 TransactionType: varTransactionType
 ```
 
+### Input activity tracking
+
+Set these input control `OnChange` properties to update the idle timer:
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
+
+Apply to:
+
+- `txtFDCount`
+- `txtRKCount`
+- `txtFobCount`
+- `txtMailboxKeyCount`
+- `txtOtherKeysDescription`
+- `txtNotes`
+
+For pen inputs, set `OnSelect` to:
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
+
+### `tmrIdleKeyDetails` properties
+
+Use the same timer settings as `tmrIdleTransactionType`.
+
+Set `tmrIdleKeyDetails.OnTimerEnd` to:
+
+```powerfx
+If(
+    DateDiff(varLastActivityAt, Now(), TimeUnit.Milliseconds) >= varIdleTimeoutMs,
+    Set(varTransactionType, Blank());
+    Set(varSelectedTenant, Blank());
+    Reset(txtFDCount);
+    Reset(txtRKCount);
+    Reset(txtFobCount);
+    Reset(txtMailboxKeyCount);
+    Reset(txtOtherKeysDescription);
+    Reset(txtNotes);
+    Reset(penTenantSignature);
+    Reset(penStaffSignature);
+    Navigate(scrWelcome, ScreenTransition.Fade)
+)
+```
+
 ## Screen: `scrSuccess`
+
+### `scrSuccess.OnVisible`
+
+```powerfx
+Set(varLastActivityAt, Now())
+```
 
 ### Success transaction reference label `Text`
 
@@ -325,5 +525,20 @@ TransactionType: varTransactionType
 ### New transaction button `OnSelect`
 
 ```powerfx
+Set(varLastActivityAt, Now());
 Navigate(scrTransactionType, ScreenTransition.Fade)
+```
+
+### `tmrIdleSuccess` properties
+
+Use the same timer settings as `tmrIdleTransactionType`.
+
+Set `tmrIdleSuccess.OnTimerEnd` to:
+
+```powerfx
+If(
+    DateDiff(varLastActivityAt, Now(), TimeUnit.Milliseconds) >= varIdleTimeoutMs,
+    Set(varLastTransactionId, Blank());
+    Navigate(scrWelcome, ScreenTransition.Fade)
+)
 ```

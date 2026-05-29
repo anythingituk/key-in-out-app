@@ -12,15 +12,17 @@ The initial implementation uses Microsoft Power Apps with SharePoint Lists as th
 
 Staff must be able to:
 
-1. Choose the transaction type:
+1. Start from a staff welcome screen.
+2. Choose the transaction type:
    - Key Return
    - Key Collection
-2. Search for a tenant by typing part of the tenant's name.
-3. View matching tenants in a limited search results list.
-4. Select the correct tenant based on name and property/unit combination.
-5. Confirm the selected tenant before continuing.
-6. Continue to the key transaction screen with selected tenant details pre-filled.
-7. Submit a key transaction record to SharePoint.
+3. Search for a tenant by typing part of the tenant's name.
+4. View matching tenants in a limited search results list.
+5. Select the correct tenant based on name and property/unit combination.
+6. Confirm the selected tenant before continuing.
+7. Continue to the key transaction screen with selected tenant details pre-filled.
+8. Submit a key transaction record to SharePoint.
+9. Return automatically to the welcome screen after inactivity.
 
 ## Privacy and Data Minimisation
 
@@ -117,22 +119,26 @@ Key collection search results should show active records where `TenantStatus` is
 
 The feature is complete when:
 
-1. Staff can select either Key Return or Key Collection.
-2. Staff can search tenants by partial name.
-3. Search results are filtered by transaction type.
-4. Search results show tenant name and property/unit combination.
-5. Search results do not expose unnecessary personal data.
-6. Staff can select the correct tenant.
-7. The selected tenant is stored in a variable.
-8. Staff can confirm the selected tenant before proceeding.
-9. Tenant details are passed into the key transaction form.
-10. The final transaction record stores the selected tenant ID, name, property, unit, and email.
+1. Staff can start from a welcome screen.
+2. Staff can select either Key Return or Key Collection.
+3. Staff can search tenants by partial name.
+4. Search results are filtered by transaction type.
+5. Search results show tenant name and property/unit combination.
+6. Search results do not expose unnecessary personal data.
+7. Staff can select the correct tenant.
+8. The selected tenant is stored in a variable.
+9. Staff can confirm the selected tenant before proceeding.
+10. Tenant details are passed into the key transaction form.
+11. The final transaction record stores the selected tenant ID, name, property, unit, and email.
+12. The app clears in-progress data and returns to the welcome screen after inactivity.
 
 ## Version 1 Scope
 
 Included:
 
 - manual tenant import into SharePoint
+- welcome/start screen
+- inactivity return to welcome screen
 - staff name search
 - transaction type filtering
 - tenant selection

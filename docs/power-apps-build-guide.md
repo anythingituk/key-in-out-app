@@ -18,6 +18,7 @@ Create these screens:
 
 | Screen Name | Purpose |
 |---|---|
+| `scrWelcome` | Staff welcome/start screen |
 | `scrTransactionType` | Choose return or collection |
 | `scrTenantSearch` | Search and select tenant |
 | `scrTenantConfirm` | Confirm selected tenant |
@@ -25,6 +26,22 @@ Create these screens:
 | `scrSuccess` | Show submission success |
 
 ## 3. Add Controls
+
+### `scrWelcome`
+
+Use the **Welcome screen** template.
+
+Keep it simple for a staff tablet:
+
+- title label
+- short subtitle label
+- button `btnStart`
+
+Recommended button text:
+
+```text
+Start key transaction
+```
 
 ### `scrTransactionType`
 
@@ -88,17 +105,32 @@ Add:
 - button `btnSubmitTransaction`
 - button `btnKeyDetailsBack`
 
+### Inactivity Timer
+
+Add a hidden timer to each workflow screen except `scrWelcome`:
+
+| Screen | Timer Name |
+|---|---|
+| `scrTransactionType` | `tmrIdleTransactionType` |
+| `scrTenantSearch` | `tmrIdleSearch` |
+| `scrTenantConfirm` | `tmrIdleConfirm` |
+| `scrKeyDetails` | `tmrIdleKeyDetails` |
+| `scrSuccess` | `tmrIdleSuccess` |
+
+Use the timer formulas in `powerapps/formulas.md`.
+
 ## 4. Apply Formulas
 
 Copy the formulas from `powerapps/formulas.md` into the matching control properties.
 
 Build the screens in this order:
 
-1. `scrTransactionType`
-2. `scrTenantSearch`
-3. `scrTenantConfirm`
-4. `scrKeyDetails`
-5. `scrSuccess`
+1. `scrWelcome`
+2. `scrTransactionType`
+3. `scrTenantSearch`
+4. `scrTenantConfirm`
+5. `scrKeyDetails`
+6. `scrSuccess`
 
 ## 5. Test
 
@@ -108,6 +140,8 @@ Test cases:
 
 - Return transaction finds outgoing and current tenants.
 - Collection transaction finds incoming and current tenants.
+- Welcome screen starts a new transaction.
+- Inactivity returns the app to the welcome screen and clears selected tenant data.
 - Search results stay empty until at least two characters are typed.
 - Cancelled tenants do not appear.
 - Inactive tenants do not appear.
