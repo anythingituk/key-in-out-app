@@ -23,9 +23,18 @@ function Assert-PowerShellVersion {
     }
 }
 
+function Add-RepoModulePath {
+    $repoRoot = Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")
+    $repoModulePath = Join-Path $repoRoot ".psmodules"
+
+    if ((Test-Path -LiteralPath $repoModulePath) -and ($env:PSModulePath -notlike "*$repoModulePath*")) {
+        $env:PSModulePath = "$repoModulePath;$env:PSModulePath"
+    }
+}
+
 function Assert-PnPModule {
     if (-not (Get-Module -ListAvailable -Name PnP.PowerShell)) {
-        throw "PnP.PowerShell is not installed. Run this in PowerShell 7.4 or later: Install-Module PnP.PowerShell -Scope CurrentUser -Force -AllowClobber"
+        throw "PnP.PowerShell is not installed. Run this in PowerShell 7.4 or later: .\sharepoint\install-pnp-module.ps1"
     }
 }
 
@@ -94,6 +103,7 @@ function Get-ExistingTenantItem {
 }
 
 Assert-PowerShellVersion
+Add-RepoModulePath
 Assert-PnPModule
 Import-Module PnP.PowerShell
 

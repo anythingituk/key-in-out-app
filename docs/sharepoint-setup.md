@@ -35,6 +35,14 @@ If you are running Windows PowerShell 5.1, install PowerShell 7 and run the setu
 winget install --id Microsoft.PowerShell --source winget
 ```
 
+If `Install-Module` fails because your Documents module folder is blocked or broken, use the repo-local installer:
+
+```powershell
+.\sharepoint\install-pnp-module.ps1
+```
+
+That creates an ignored `.psmodules` folder in the repository. The provisioning scripts automatically add that folder to the PowerShell module path for the current run.
+
 ## Provision the Lists
 
 From the repository root:

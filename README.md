@@ -21,6 +21,7 @@ No real tenant data, staff data, SharePoint URLs, credentials, or business-speci
 | `docs/power-apps-build-guide.md` | Step-by-step Power Apps build instructions |
 | `docs/github-publication.md` | Step-by-step GitHub publishing guidance |
 | `powerapps/formulas.md` | Power Fx formulas for the app screens and controls |
+| `sharepoint/install-pnp-module.ps1` | Optional repo-local PnP PowerShell installer |
 | `sharepoint/provision-lists.ps1` | PnP PowerShell script to create the SharePoint Lists |
 | `sharepoint/import-sample-tenants.ps1` | Optional script to import fake sample tenant data |
 | `data/sample-tenants.csv` | Fake data for testing only |
@@ -51,6 +52,12 @@ If needed, install PowerShell 7 on Windows:
 
 ```powershell
 winget install --id Microsoft.PowerShell --source winget
+```
+
+If your computer blocks installation into the normal PowerShell module folder, install the dependency into this repo instead:
+
+```powershell
+.\sharepoint\install-pnp-module.ps1
 ```
 
 ## Step 1: Create the SharePoint Lists
