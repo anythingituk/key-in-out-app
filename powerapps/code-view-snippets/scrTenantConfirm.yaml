@@ -1,0 +1,97 @@
+- lblConfirmTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Confirm tenant"
+      X: =40
+      Y: =40
+      Width: =Parent.Width - 80
+      Height: =44
+      Size: =26
+      FontWeight: =FontWeight.Bold
+
+- lblConfirmName:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: '="Name: " & varSelectedTenant.FullName'
+      X: =80
+      Y: =120
+      Width: =Parent.Width - 160
+      Height: =36
+      Size: =18
+
+- lblConfirmProperty:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: '="Property: " & varSelectedTenant.PropertyName'
+      X: =80
+      Y: =168
+      Width: =Parent.Width - 160
+      Height: =36
+      Size: =18
+
+- lblConfirmUnit:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: '="Unit: " & varSelectedTenant.UnitReference'
+      X: =80
+      Y: =216
+      Width: =Parent.Width - 160
+      Height: =36
+      Size: =18
+
+- lblConfirmEmail:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: |-
+        ="Email: " &
+        If(
+            IsBlank(varSelectedTenant.Email) || !IsMatch(varSelectedTenant.Email, Match.Email),
+            "",
+            Left(varSelectedTenant.Email, Min(3, Find("@", varSelectedTenant.Email) - 1)) &
+            "*****" &
+            Mid(varSelectedTenant.Email, Find("@", varSelectedTenant.Email), Len(varSelectedTenant.Email))
+        )
+      X: =80
+      Y: =264
+      Width: =Parent.Width - 160
+      Height: =36
+      Size: =18
+
+- lblConfirmTransaction:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: '=If(varTransactionType = "Return", "Transaction: Key Return", "Transaction: Key Collection")'
+      X: =80
+      Y: =312
+      Width: =Parent.Width - 160
+      Height: =36
+      Size: =18
+      FontWeight: =FontWeight.Semibold
+
+- btnConfirmBack:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Back to search"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrTenantSearch, ScreenTransition.Fade)
+      X: =40
+      Y: =Parent.Height - 76
+      Width: =180
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
+
+- btnConfirmContinue:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Continue"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrKeyDetails, ScreenTransition.Fade)
+      X: =Parent.Width - 200
+      Y: =Parent.Height - 76
+      Width: =160
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16

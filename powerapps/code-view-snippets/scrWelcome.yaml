@@ -1,0 +1,38 @@
+- lblWelcomeTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Key In/Out App"
+      X: =40
+      Y: =90
+      Width: =Parent.Width - 80
+      Height: =56
+      Size: =32
+      FontWeight: =FontWeight.Bold
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- lblWelcomeSubtitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Staff key return and collection transactions"
+      X: =40
+      Y: =150
+      Width: =Parent.Width - 80
+      Height: =40
+      Size: =18
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- btnStart:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Start key transaction"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrTransactionType, ScreenTransition.Fade)
+      X: =(Parent.Width - 280) / 2
+      Y: =240
+      Width: =280
+      Height: =48
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16

@@ -1,0 +1,38 @@
+- lblSuccessTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Transaction submitted"
+      X: =40
+      Y: =120
+      Width: =Parent.Width - 80
+      Height: =54
+      Size: =30
+      FontWeight: =FontWeight.Bold
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- lblSuccessReference:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: '="Transaction reference: " & varLastTransactionId'
+      X: =40
+      Y: =188
+      Width: =Parent.Width - 80
+      Height: =36
+      Size: =16
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- btnNewTransaction:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="New transaction"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrTransactionType, ScreenTransition.Fade)
+      X: =(Parent.Width - 220) / 2
+      Y: =280
+      Width: =220
+      Height: =48
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16

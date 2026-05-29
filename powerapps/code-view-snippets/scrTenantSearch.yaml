@@ -1,0 +1,159 @@
+- lblSearchTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: =If(varTransactionType = "Return", "Find tenant returning keys", "Find tenant collecting keys")
+      X: =40
+      Y: =32
+      Width: =Parent.Width - 80
+      Height: =42
+      Size: =24
+      FontWeight: =FontWeight.Bold
+
+- lblSearchHint:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Type at least two characters. Results show only active records relevant to the transaction type."
+      X: =40
+      Y: =78
+      Width: =Parent.Width - 80
+      Height: =32
+      Size: =13
+
+- txtTenantSearch:
+    Control: ModernTextInput@1.0.0
+    Properties:
+      Placeholder: ="Search tenant name..."
+      Type: =TextInputType.Search
+      TriggerOutput: =TriggerOutput.Keypress
+      Appearance: =Appearance.Outline
+      AccessibleLabel: ="Search tenant name"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =40
+      Y: =124
+      Width: =Parent.Width - 80
+      Height: =40
+
+- dgTenantResults:
+    Control: ModernDataGrid@1.1.0
+    Properties:
+      Items: |-
+        =With(
+            {
+                searchText: Trim(txtTenantSearch.Text)
+            },
+            If(
+                Len(searchText) < 2,
+                Filter(TenantTracker, false),
+                SortByColumns(
+                    Filter(
+                        TenantTracker,
+                        IsActiveForKeyApp = true &&
+                        (
+                            StartsWith(FullName, searchText) ||
+                            StartsWith(FirstName, searchText) ||
+                            StartsWith(LastName, searchText)
+                        ) &&
+                        (
+                            (
+                                varTransactionType = "Return" &&
+                                (
+                                    TenantStatus.Value = "Outgoing" ||
+                                    TenantStatus.Value = "Current"
+                                )
+                            ) ||
+                            (
+                                varTransactionType = "Collection" &&
+                                (
+                                    TenantStatus.Value = "Incoming" ||
+                                    TenantStatus.Value = "Current"
+                                )
+                            )
+                        )
+                    ),
+                    "LastName",
+                    SortOrder.Ascending
+                )
+            )
+        )
+      Searchable: =false
+      Sortable: =true
+      SelectMultiple: =false
+      ShowSelector: =true
+      X: =40
+      Y: =184
+      Width: =Parent.Width - 80
+      Height: =Parent.Height - 284
+    Children:
+      - FullName_Column:
+          Control: ModernDataGridColumn@1.1.0
+          Variant: Textual
+          IsLocked: true
+          Properties:
+            FieldDisplayName: ="Tenant"
+            Text: =ThisItem.FullName
+      - Unit_Column:
+          Control: ModernDataGridColumn@1.1.0
+          Variant: Textual
+          IsLocked: true
+          Properties:
+            FieldDisplayName: ="Unit"
+            Text: =ThisItem.UnitReference
+      - Property_Column:
+          Control: ModernDataGridColumn@1.1.0
+          Variant: Textual
+          IsLocked: true
+          Properties:
+            FieldDisplayName: ="Property"
+            Text: =ThisItem.PropertyName
+      - Email_Column:
+          Control: ModernDataGridColumn@1.1.0
+          Variant: Textual
+          IsLocked: true
+          Properties:
+            FieldDisplayName: ="Email"
+            Text: |-
+              =If(
+                  IsBlank(ThisItem.Email) || !IsMatch(ThisItem.Email, Match.Email),
+                  "",
+                  Left(ThisItem.Email, Min(3, Find("@", ThisItem.Email) - 1)) &
+                  "*****" &
+                  Mid(ThisItem.Email, Find("@", ThisItem.Email), Len(ThisItem.Email))
+              )
+      - Status_Column:
+          Control: ModernDataGridColumn@1.1.0
+          Variant: Textual
+          IsLocked: true
+          Properties:
+            FieldDisplayName: ="Status"
+            Text: =ThisItem.TenantStatus.Value
+
+- btnSearchBack:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Back"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Set(varSelectedTenant, Blank());
+        Navigate(scrTransactionType, ScreenTransition.Fade)
+      X: =40
+      Y: =Parent.Height - 76
+      Width: =140
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
+
+- btnSearchContinue:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Continue"
+      DisplayMode: =If(IsBlank(dgTenantResults.Selected.TenantID), DisplayMode.Disabled, DisplayMode.Edit)
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Set(varSelectedTenant, dgTenantResults.Selected);
+        Navigate(scrTenantConfirm, ScreenTransition.Fade)
+      X: =Parent.Width - 200
+      Y: =Parent.Height - 76
+      Width: =160
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16

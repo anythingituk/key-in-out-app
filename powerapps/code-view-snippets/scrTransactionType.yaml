@@ -1,0 +1,72 @@
+- lblTransactionTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="What is the transaction type?"
+      X: =40
+      Y: =64
+      Width: =Parent.Width - 80
+      Height: =48
+      Size: =28
+      FontWeight: =FontWeight.Bold
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- lblTransactionSubtitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Choose whether staff are receiving keys back or handing keys out."
+      X: =40
+      Y: =118
+      Width: =Parent.Width - 80
+      Height: =36
+      Size: =16
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+
+- btnReturnKeys:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Return Keys"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Set(varTransactionType, "Return");
+        Set(varSelectedTenant, Blank());
+        Reset(txtTenantSearch);
+        Navigate(scrTenantSearch, ScreenTransition.Fade)
+      X: =(Parent.Width / 2) - 300
+      Y: =220
+      Width: =260
+      Height: =64
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
+
+- btnCollectKeys:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Collect Keys"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Set(varTransactionType, "Collection");
+        Set(varSelectedTenant, Blank());
+        Reset(txtTenantSearch);
+        Navigate(scrTenantSearch, ScreenTransition.Fade)
+      X: =(Parent.Width / 2) + 40
+      Y: =220
+      Width: =260
+      Height: =64
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
+
+- btnTransactionBack:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Back"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrWelcome, ScreenTransition.Fade)
+      X: =40
+      Y: =Parent.Height - 84
+      Width: =140
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16

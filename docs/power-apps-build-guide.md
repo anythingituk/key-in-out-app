@@ -27,6 +27,10 @@ Create these screens:
 
 ## 3. Add Controls
 
+Fast path: paste the Code View snippets from `powerapps/code-view-snippets/` into each matching screen.
+
+Manual path: add the controls below one at a time and apply formulas from `powerapps/formulas.md`.
+
 ### `scrWelcome`
 
 Use the **Welcome screen** template.
@@ -121,7 +125,16 @@ Use the timer formulas in `powerapps/formulas.md`.
 
 ## 4. Apply Formulas
 
-Copy the formulas from `powerapps/formulas.md` into the matching control properties.
+If you used the Code View snippets, most control-level formulas are already pasted with the controls.
+
+You still need to set:
+
+- `App.StartScreen`
+- `App.OnStart`
+- inactivity timers
+- pen input controls, if signatures are needed immediately
+
+If building manually, copy the formulas from `powerapps/formulas.md` into the matching control properties.
 
 Build the screens in this order:
 

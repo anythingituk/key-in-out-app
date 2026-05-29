@@ -53,6 +53,25 @@ For this project, the most practical approach is:
 
 If generated YAML fails to paste, create one simple control in your app, choose **View code**, and use that as the reference format for that environment.
 
+## Paste This Project's Snippets
+
+1. Create each screen manually with the exact screen names.
+2. Open the matching file from `powerapps/code-view-snippets/`.
+3. Copy the full YAML file contents.
+4. In Power Apps Studio, select the matching screen.
+5. Paste with `Ctrl+V`.
+
+Paste order:
+
+1. `scrWelcome.yaml`
+2. `scrTransactionType.yaml`
+3. `scrTenantSearch.yaml`
+4. `scrTenantConfirm.yaml`
+5. `scrKeyDetails.yaml`
+6. `scrSuccess.yaml`
+
+The snippets do not create the App object settings. Set `App.StartScreen` and `App.OnStart` manually.
+
 ## Show Tree View
 
 Use the left rail and select **Tree view**.

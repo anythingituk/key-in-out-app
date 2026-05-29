@@ -1,0 +1,245 @@
+- lblKeyDetailsTitle:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: =If(varTransactionType = "Return", "Key return details", "Key collection details")
+      X: =40
+      Y: =32
+      Width: =Parent.Width - 80
+      Height: =42
+      Size: =24
+      FontWeight: =FontWeight.Bold
+
+- lblKeyDetailsTenant:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: =varSelectedTenant.FullName & " - " & varSelectedTenant.UnitReference & ", " & varSelectedTenant.PropertyName
+      X: =40
+      Y: =78
+      Width: =Parent.Width - 80
+      Height: =32
+      Size: =14
+
+- lblFDCount:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Front door keys"
+      X: =60
+      Y: =138
+      Width: =220
+      Height: =32
+      Size: =14
+
+- txtFDCount:
+    Control: ModernNumberInput@1.0.0
+    Properties:
+      Default: =0
+      Min: =0
+      Max: =20
+      Step: =1
+      Precision: =DecimalPrecision.'0'
+      HintText: ="0"
+      AccessibleLabel: ="Front door key count"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =300
+      Y: =134
+      Width: =120
+      Height: =36
+
+- lblRKCount:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Room keys"
+      X: =60
+      Y: =188
+      Width: =220
+      Height: =32
+      Size: =14
+
+- txtRKCount:
+    Control: ModernNumberInput@1.0.0
+    Properties:
+      Default: =0
+      Min: =0
+      Max: =20
+      Step: =1
+      Precision: =DecimalPrecision.'0'
+      HintText: ="0"
+      AccessibleLabel: ="Room key count"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =300
+      Y: =184
+      Width: =120
+      Height: =36
+
+- lblFobCount:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Fobs"
+      X: =60
+      Y: =238
+      Width: =220
+      Height: =32
+      Size: =14
+
+- txtFobCount:
+    Control: ModernNumberInput@1.0.0
+    Properties:
+      Default: =0
+      Min: =0
+      Max: =20
+      Step: =1
+      Precision: =DecimalPrecision.'0'
+      HintText: ="0"
+      AccessibleLabel: ="Fob count"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =300
+      Y: =234
+      Width: =120
+      Height: =36
+
+- lblMailboxKeyCount:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Mailbox keys"
+      X: =60
+      Y: =288
+      Width: =220
+      Height: =32
+      Size: =14
+
+- txtMailboxKeyCount:
+    Control: ModernNumberInput@1.0.0
+    Properties:
+      Default: =0
+      Min: =0
+      Max: =20
+      Step: =1
+      Precision: =DecimalPrecision.'0'
+      HintText: ="0"
+      AccessibleLabel: ="Mailbox key count"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =300
+      Y: =284
+      Width: =120
+      Height: =36
+
+- lblOtherKeysDescription:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Other keys or notes"
+      X: =480
+      Y: =138
+      Width: =Parent.Width - 540
+      Height: =32
+      Size: =14
+
+- txtOtherKeysDescription:
+    Control: ModernTextInput@1.0.0
+    Properties:
+      Default: =""
+      Placeholder: ="Optional description..."
+      Type: =TextInputType.Multiline
+      TriggerOutput: =TriggerOutput.FocusOut
+      AccessibleLabel: ="Other keys description"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =480
+      Y: =174
+      Width: =Parent.Width - 540
+      Height: =100
+
+- lblNotes:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Internal notes"
+      X: =480
+      Y: =296
+      Width: =Parent.Width - 540
+      Height: =32
+      Size: =14
+
+- txtNotes:
+    Control: ModernTextInput@1.0.0
+    Properties:
+      Default: =""
+      Placeholder: ="Optional internal notes..."
+      Type: =TextInputType.Multiline
+      TriggerOutput: =TriggerOutput.FocusOut
+      AccessibleLabel: ="Internal notes"
+      OnChange: =Set(varLastActivityAt, Now())
+      X: =480
+      Y: =332
+      Width: =Parent.Width - 540
+      Height: =100
+
+- lblSignatureReminder:
+    Control: ModernText@1.0.0
+    Properties:
+      Text: ="Add pen input controls manually and name them penTenantSignature and penStaffSignature before using the final submit formula."
+      X: =60
+      Y: =360
+      Width: =360
+      Height: =80
+      Size: =13
+
+- btnKeyDetailsBack:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Back"
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Navigate(scrTenantConfirm, ScreenTransition.Fade)
+      X: =40
+      Y: =Parent.Height - 76
+      Width: =140
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
+
+- btnSubmitTransaction:
+    Control: ModernButton@1.0.0
+    Properties:
+      Text: ="Submit transaction"
+      DisplayMode: =If(IsBlank(varSelectedTenant) || IsBlank(varTransactionType), DisplayMode.Disabled, DisplayMode.Edit)
+      OnSelect: |-
+        =Set(varLastActivityAt, Now());
+        Set(
+            varLastTransactionId,
+            Text(Now(), "yyyymmddhhmmss") & "-" & Left(Text(GUID()), 8)
+        );
+        Patch(
+            KeyTransactions,
+            Defaults(KeyTransactions),
+            {
+                Title: varLastTransactionId,
+                TransactionID: varLastTransactionId,
+                TransactionType: { Value: varTransactionType },
+                TenantID: varSelectedTenant.TenantID,
+                TenantName: varSelectedTenant.FullName,
+                TenantEmail: varSelectedTenant.Email,
+                PropertyName: varSelectedTenant.PropertyName,
+                UnitReference: varSelectedTenant.UnitReference,
+                FDCount: txtFDCount.Value,
+                RKCount: txtRKCount.Value,
+                FobCount: txtFobCount.Value,
+                MailboxKeyCount: txtMailboxKeyCount.Value,
+                OtherKeysDescription: txtOtherKeysDescription.Text,
+                StaffName: User().FullName,
+                SubmittedAt: Now(),
+                Notes: txtNotes.Text
+            }
+        );
+        Reset(txtFDCount);
+        Reset(txtRKCount);
+        Reset(txtFobCount);
+        Reset(txtMailboxKeyCount);
+        Reset(txtOtherKeysDescription);
+        Reset(txtNotes);
+        Set(varSelectedTenant, Blank());
+        Set(varTransactionType, Blank());
+        Navigate(scrSuccess, ScreenTransition.Fade)
+      X: =Parent.Width - 240
+      Y: =Parent.Height - 76
+      Width: =200
+      Height: =44
+      LayoutMinHeight: =16
+      LayoutMinWidth: =16
