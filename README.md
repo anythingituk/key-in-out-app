@@ -19,6 +19,7 @@ No real tenant data, staff data, SharePoint URLs, credentials, or business-speci
 | `docs/requirements.md` | Generic functional requirements and acceptance criteria |
 | `docs/sharepoint-setup.md` | Step-by-step SharePoint setup guidance |
 | `docs/power-apps-build-guide.md` | Step-by-step Power Apps build instructions |
+| `docs/power-apps-studio-navigation.md` | Power Apps Studio click-path guide for common setup tasks |
 | `docs/github-publication.md` | Step-by-step GitHub publishing guidance |
 | `powerapps/formulas.md` | Power Fx formulas for the app screens and controls |
 | `sharepoint/install-pnp-module.ps1` | Optional repo-local PnP PowerShell installer |
