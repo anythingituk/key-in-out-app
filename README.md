@@ -54,6 +54,18 @@ If needed, install PowerShell 7 on Windows:
 winget install --id Microsoft.PowerShell --source winget
 ```
 
+Installing PowerShell 7 does not change an already-open Windows PowerShell 5.1 window. Start PowerShell 7 by running:
+
+```powershell
+pwsh
+```
+
+Then check the version again:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
 If your computer blocks installation into the normal PowerShell module folder, install the dependency into this repo instead:
 
 ```powershell

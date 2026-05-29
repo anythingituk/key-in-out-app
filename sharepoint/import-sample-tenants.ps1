@@ -19,7 +19,7 @@ function Assert-PowerShellVersion {
     $minimumVersion = [version]"7.4.0"
 
     if ($PSVersionTable.PSVersion -lt $minimumVersion) {
-        throw "PnP.PowerShell requires PowerShell 7.4 or later. Current version: $($PSVersionTable.PSVersion). Install PowerShell 7 with: winget install --id Microsoft.PowerShell --source winget"
+        throw "PnP.PowerShell requires PowerShell 7.4 or later, but this session is $($PSVersionTable.PSVersion). If PowerShell 7 is installed, start it with: pwsh"
     }
 }
 

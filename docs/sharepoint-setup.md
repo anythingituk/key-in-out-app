@@ -35,6 +35,18 @@ If you are running Windows PowerShell 5.1, install PowerShell 7 and run the setu
 winget install --id Microsoft.PowerShell --source winget
 ```
 
+Installing PowerShell 7 does not upgrade an already-open Windows PowerShell 5.1 session. Start PowerShell 7 by running:
+
+```powershell
+pwsh
+```
+
+Then check the version again:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
 If `Install-Module` fails because your Documents module folder is blocked or broken, use the repo-local installer:
 
 ```powershell
