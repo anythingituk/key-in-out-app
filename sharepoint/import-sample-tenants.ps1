@@ -118,7 +118,7 @@ $rows = Import-Csv -LiteralPath $CsvPath
 foreach ($row in $rows) {
     $existing = Get-ExistingTenantItem -TenantId $row.TenantID
 
-    if ($existing.Count -gt 0) {
+    if ($null -ne $existing -and @($existing).Count -gt 0) {
         Write-Host "Skipping existing tenant: $($row.TenantID)"
         continue
     }
