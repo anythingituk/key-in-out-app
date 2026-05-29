@@ -12,16 +12,28 @@ The generated provisioning script creates both lists and the recommended columns
 You need:
 
 - permission to manage lists on the SharePoint site
-- PowerShell
+- PowerShell 7.4 or later
 - PnP PowerShell
 
 Install PnP PowerShell:
 
 ```powershell
-Install-Module PnP.PowerShell -Scope CurrentUser
+Install-Module PnP.PowerShell -Scope CurrentUser -Force -AllowClobber
 ```
 
 If PowerShell prompts you to trust the repository, choose yes only if you are comfortable installing modules from PowerShell Gallery.
+
+Check your PowerShell version:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
+If you are running Windows PowerShell 5.1, install PowerShell 7 and run the setup commands from a PowerShell 7 terminal:
+
+```powershell
+winget install --id Microsoft.PowerShell --source winget
+```
 
 ## Provision the Lists
 
@@ -33,7 +45,7 @@ From the repository root:
 
 Replace the example URL with your SharePoint site URL.
 
-If your Microsoft 365 tenant requires an Entra application client ID for PnP PowerShell:
+Current PnP PowerShell authentication normally requires your own Entra application client ID for interactive login. If sign-in fails and asks for a client ID, register an Entra app for PnP PowerShell and rerun with:
 
 ```powershell
 .\sharepoint\provision-lists.ps1 `

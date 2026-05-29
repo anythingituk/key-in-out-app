@@ -15,9 +15,17 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+function Assert-PowerShellVersion {
+    $minimumVersion = [version]"7.4.0"
+
+    if ($PSVersionTable.PSVersion -lt $minimumVersion) {
+        throw "PnP.PowerShell requires PowerShell 7.4 or later. Current version: $($PSVersionTable.PSVersion). Install PowerShell 7 with: winget install --id Microsoft.PowerShell --source winget"
+    }
+}
+
 function Assert-PnPModule {
     if (-not (Get-Module -ListAvailable -Name PnP.PowerShell)) {
-        throw "PnP.PowerShell is not installed. Run: Install-Module PnP.PowerShell -Scope CurrentUser"
+        throw "PnP.PowerShell is not installed. Run this in PowerShell 7.4 or later: Install-Module PnP.PowerShell -Scope CurrentUser -Force -AllowClobber"
     }
 }
 
@@ -39,6 +47,14 @@ function Connect-Site {
 
     if (-not [string]::IsNullOrWhiteSpace($TenantName)) {
         $connectParams["Tenant"] = $TenantName
+    }
+
+    if (
+        [string]::IsNullOrWhiteSpace($AppClientId) -and
+        [string]::IsNullOrWhiteSpace($env:ENTRAID_APP_ID) -and
+        [string]::IsNullOrWhiteSpace($env:ENTRAID_CLIENT_ID)
+    ) {
+        Write-Warning "PnP interactive sign-in may require a registered Entra app client ID. If sign-in fails, rerun with -ClientId or set ENTRAID_APP_ID."
     }
 
     Connect-PnPOnline @connectParams
@@ -77,6 +93,7 @@ function Get-ExistingTenantItem {
     return Get-PnPListItem -List $ListName -Query $query
 }
 
+Assert-PowerShellVersion
 Assert-PnPModule
 Import-Module PnP.PowerShell
 

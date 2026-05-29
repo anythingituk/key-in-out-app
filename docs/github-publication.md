@@ -10,6 +10,7 @@ Before publishing, check that the repo contains no:
 - real tenant email addresses
 - staff names
 - SharePoint site URLs that identify an organisation
+- tenant-specific Microsoft 365 domains
 - business-specific names
 - screenshots with personal data
 - exported Power Apps packages that have not been reviewed

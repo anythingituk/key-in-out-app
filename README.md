@@ -30,7 +30,7 @@ No real tenant data, staff data, SharePoint URLs, credentials, or business-speci
 
 - A Microsoft 365 tenant with SharePoint and Power Apps access
 - Permission to create or manage SharePoint Lists on the target site
-- PowerShell 7 or Windows PowerShell
+- PowerShell 7.4 or later
 - PnP PowerShell module
 - Git
 - A GitHub account
@@ -38,7 +38,19 @@ No real tenant data, staff data, SharePoint URLs, credentials, or business-speci
 Install PnP PowerShell if needed:
 
 ```powershell
-Install-Module PnP.PowerShell -Scope CurrentUser
+Install-Module PnP.PowerShell -Scope CurrentUser -Force -AllowClobber
+```
+
+PnP PowerShell requires PowerShell 7.4 or later. Check your version with:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
+If needed, install PowerShell 7 on Windows:
+
+```powershell
+winget install --id Microsoft.PowerShell --source winget
 ```
 
 ## Step 1: Create the SharePoint Lists
