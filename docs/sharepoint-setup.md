@@ -55,12 +55,33 @@ If `Install-Module` fails because your Documents module folder is blocked or bro
 
 That creates an ignored `.psmodules` folder in the repository. The provisioning scripts automatically add that folder to the PowerShell module path for the current run.
 
+## Register the PnP Entra App
+
+Current PnP PowerShell interactive login requires a tenant-owned Entra app registration.
+
+You need an account that can create app registrations. Admin consent may require a Global Administrator.
+
+Run this once per Microsoft 365 tenant:
+
+```powershell
+.\sharepoint\register-pnp-interactive-app.ps1 -Tenant "contoso.onmicrosoft.com"
+```
+
+Replace `contoso.onmicrosoft.com` with your tenant's `onmicrosoft.com` domain.
+
+The helper requests SharePoint delegated `AllSites.FullControl` permission because the provisioning script creates and updates SharePoint Lists and fields. Delegated permission still runs as the signed-in user, so the signed-in user must also have sufficient SharePoint access to the target site.
+
+Copy the returned client ID.
+
 ## Provision the Lists
 
 From the repository root:
 
 ```powershell
-.\sharepoint\provision-lists.ps1 -SiteUrl "https://contoso.sharepoint.com/sites/key-management"
+.\sharepoint\provision-lists.ps1 `
+  -SiteUrl "https://contoso.sharepoint.com/sites/key-management" `
+  -Tenant "contoso.onmicrosoft.com" `
+  -ClientId "00000000-0000-0000-0000-000000000000"
 ```
 
 Replace the example URL with your SharePoint site URL.

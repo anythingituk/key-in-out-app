@@ -22,6 +22,7 @@ No real tenant data, staff data, SharePoint URLs, credentials, or business-speci
 | `docs/github-publication.md` | Step-by-step GitHub publishing guidance |
 | `powerapps/formulas.md` | Power Fx formulas for the app screens and controls |
 | `sharepoint/install-pnp-module.ps1` | Optional repo-local PnP PowerShell installer |
+| `sharepoint/register-pnp-interactive-app.ps1` | Helper to create the Entra app registration required by PnP PowerShell |
 | `sharepoint/provision-lists.ps1` | PnP PowerShell script to create the SharePoint Lists |
 | `sharepoint/import-sample-tenants.ps1` | Optional script to import fake sample tenant data |
 | `data/sample-tenants.csv` | Fake data for testing only |
@@ -70,6 +71,21 @@ If your computer blocks installation into the normal PowerShell module folder, i
 
 ```powershell
 .\sharepoint\install-pnp-module.ps1
+```
+
+Current PnP PowerShell interactive login also requires an Entra app registration. Create one with:
+
+```powershell
+.\sharepoint\register-pnp-interactive-app.ps1 -Tenant "contoso.onmicrosoft.com"
+```
+
+Copy the returned client ID and pass it to the provisioning script:
+
+```powershell
+.\sharepoint\provision-lists.ps1 `
+  -SiteUrl "https://contoso.sharepoint.com/sites/key-management" `
+  -Tenant "contoso.onmicrosoft.com" `
+  -ClientId "00000000-0000-0000-0000-000000000000"
 ```
 
 ## Step 1: Create the SharePoint Lists
