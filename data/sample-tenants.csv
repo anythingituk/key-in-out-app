@@ -1,0 +1,6 @@
+TenantID,FirstName,LastName,FullName,Email,PropertyName,UnitReference,TenancyYear,TenantStatus,ExpectedMoveInDate,ExpectedMoveOutDate,IsActiveForKeyApp
+T-1001,Alex,Morgan,Alex Morgan,alex.morgan@example.com,Campus View,Studio 15,2026-2027,Incoming,2026-09-01,,true
+T-1002,Jordan,Patel,Jordan Patel,jordan.patel@example.com,Riverside House,Flat 3 Room 2,2025-2026,Outgoing,,2026-06-30,true
+T-1003,Sam,Taylor,Sam Taylor,sam.taylor@example.com,Market Street Studios,Studio 8,2025-2026,Current,2025-09-01,2026-08-31,true
+T-1004,Casey,Williams,Casey Williams,casey.williams@example.com,Campus View,Studio 21,2026-2027,Cancelled,2026-09-01,,true
+T-1005,Riley,Chen,Riley Chen,riley.chen@example.com,Riverside House,Flat 6 Room 1,2025-2026,Completed,2025-09-01,2026-05-15,false

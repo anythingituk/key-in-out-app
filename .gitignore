@@ -1,0 +1,25 @@
+# Local configuration and secrets
+.env
+.env.*
+*.local.*
+
+# Power Apps exports can contain environment-specific metadata.
+# Review carefully before committing any exported package.
+*.msapp
+*.zip
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+~$*
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# PowerShell module/cache output
+*.ps1xml
+*.clixml
